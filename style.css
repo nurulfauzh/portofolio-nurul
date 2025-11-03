@@ -176,6 +176,13 @@ nav ul {
 }
 
 /* Bagian Tentang Saya */
+#about p {
+  text-align: left;
+  max-width: 800px; /* Batasi lebar agar lebih mudah dibaca */
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .subtitle {
   margin-top: -0.5rem;
   margin-bottom: 2rem;
@@ -227,17 +234,66 @@ nav ul {
 .experience-item .company {
   font-style: italic;
   color: #666;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem; /* Beri jarak ke akordeon pertama */
 }
 
-.experience-item ul {
-  list-style-position: inside;
+/* Bagian Dokumentasi (BARU) */
+#documentation {
+  background-color: var(--bg-pink);
+}
+
+.documentation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.doc-card {
+  display: block;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem 2rem;
+  text-align: left;
+  text-decoration: none;
+  color: var(--dark-text);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-left: 5px solid var(--primary-pink);
+}
+
+.doc-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.doc-card h3 {
+  font-size: 1.25rem;
+  color: var(--primary-pink);
+  margin-bottom: 0.5rem;
+}
+
+.doc-card p {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.doc-card span {
+  font-weight: 600;
+  color: var(--primary-pink);
+  transition: transform 0.3s ease;
+}
+
+.doc-card:hover span {
+  transform: translateX(5px);
 }
 
 /* Bagian Proyek */
 #projects {
-  background-color: var(--bg-pink); /* Menyamakan background dengan body */
+  /* Ganti background agar selang-seling */
+  background-color: white;
 }
+
 .project-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -251,7 +307,7 @@ nav ul {
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   padding-bottom: 1.5rem;
-  text-align: left; /* Mengubah menjadi rata kiri agar lebih rapi */
+  text-align: left;
 }
 
 .project-card:hover {
@@ -278,7 +334,7 @@ nav ul {
 
 /* Bagian Kontak */
 #contact {
-  background-color: white;
+  background-color: var(--bg-pink); /* Ganti background */
 }
 
 .contact-icons {
@@ -318,6 +374,7 @@ footer {
   padding: 2rem;
   font-size: 0.9rem;
   color: #777;
+  background-color: white;
 }
 
 /* Navigasi Aktif (Bubble) */
@@ -333,17 +390,104 @@ nav ul li a {
 nav ul li a.active {
   background-color: var(--primary-pink);
   color: var(--light-text);
+  font-weight: 600;
 }
 
 nav ul li a:hover:not(.active) {
   background-color: #fce4ec;
 }
 
-/* Responsif untuk Mobile */
+/* Tombol Hamburger */
+.menu-toggle {
+  display: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: var(--primary-pink);
+}
+
+/* ========================================= */
+/* STYLE AKORDEON PENGALAMAN (BARU)         */
+/* ========================================= */
+
+.role-accordion {
+  margin-bottom: 0.5rem; /* Jarak antar peran */
+}
+
+.accordion-toggle {
+  /* Style tombol judul peran */
+  background-color: #fce4ec; /* Pink muda, senada dengan bubble */
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  width: 100%;
+  text-align: left;
+  font-family: "Poppins", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--dark-text);
+  cursor: pointer;
+
+  /* Ini untuk menaruh ikon '+' di kanan */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+.accordion-toggle:hover {
+  background-color: #f8c8dc; /* Pink sedikit lebih gelap */
+}
+
+.accordion-toggle .icon {
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: var(--primary-pink);
+  transition: transform 0.3s ease-out;
+}
+
+/* Ganti ikon '+' menjadi '-' saat aktif */
+.accordion-toggle.active .icon {
+  content: "−"; /* Karakter minus */
+  transform: rotate(180deg);
+}
+
+.accordion-panel {
+  /* INI LOGIKA UTAMANYA: Sembunyikan panel by default */
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-out;
+
+  background: #ffffff;
+  border-radius: 0 0 8px 8px;
+  margin-top: -2px; /* Menempel dengan tombol */
+  padding: 0 1.5rem; /* Padding akan muncul saat terbuka */
+}
+
+/* Ini adalah style list kita yang lama, tapi untuk di dalam panel */
+.accordion-panel ul {
+  list-style-type: disc;
+  list-style-position: outside;
+  padding-left: 20px;
+  margin-left: 1rem;
+  padding-top: 1.5rem; /* Jarak dari atas saat panel terbuka */
+  padding-bottom: 1rem; /* Jarak dari bawah */
+}
+
+.accordion-panel li {
+  margin-bottom: 0.8rem;
+  line-height: 1.6;
+  padding-left: 5px;
+}
+
+/* ========================================= */
+/* KODE RESPONSIVE (SELALU DI PALING BAWAH) */
+/* ========================================= */
+
 @media (max-width: 768px) {
   .hero {
     flex-direction: column-reverse;
     text-align: center;
+    padding-top: 6rem;
   }
   .hero-text {
     text-align: center;
@@ -360,17 +504,43 @@ nav ul li a:hover:not(.active) {
     margin-top: -4rem; /* Menyesuaikan jarak atas */
     margin-bottom: -4rem; /* Menyesuaikan jarak bawah */
   }
-  nav ul {
-    display: none;
+
+  /* Style Navigasi Mobile */
+  .menu-toggle {
+    display: block; /* Tampilkan tombol hamburger di mobile */
+  }
+
+  nav ul.nav-links {
+    display: none; /* Sembunyikan menu by default */
+    flex-direction: column;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    position: absolute;
+    top: 65px; /* Sesuaikan dengan tinggi header Anda */
+    left: 0;
+    padding: 1rem 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  nav ul.nav-links.active {
+    display: flex; /* Tampilkan menu saat di-klik */
+  }
+
+  nav ul.nav-links li {
+    text-align: center;
+    padding: 1rem 0;
   }
 }
+
 /* ===== ANIMASI EFEK MENGETIK ===== */
 .animate-typing {
   display: inline-block;
   overflow: hidden;
   white-space: nowrap;
   border-right: 3px solid var(--primary-pink);
-  animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+  /* HI, = 4 karakter, <br/> = 1, Saya Nurul Fauziah = 19. Total 24 */
+  animation: typing 3s steps(24), blink-caret 0.75s step-end infinite;
 }
 
 @keyframes typing {
