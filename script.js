@@ -1,47 +1,79 @@
-// Menunggu sampai seluruh konten halaman dimuat
-document.addEventListener("DOMContentLoaded", function () {
-  // Ambil semua section yang punya ID dan semua link navigasi
-  const sections = document.querySelectorAll("section[id]");
-  const navLinks = document.querySelectorAll("nav a");
+const menuToggle = document.querySelector(".menu-toggle");
+const navLinksContainer = document.querySelector(".nav-links");
+const allNavLinks = document.querySelectorAll("nav ul.nav-links li a");
 
-  // Fungsi untuk mengubah status 'active' pada link navigasi
-  const changeActiveLink = (id) => {
-    navLinks.forEach((link) => {
-      link.classList.remove("active");
-      if (link.getAttribute("href") === "#" + id) {
-        link.classList.add("active");
-      }
-    });
-  };
+// 1. Tampilkan / Sembunyikan menu saat tombol di-klik
+menuToggle.addEventListener("click", () => {
+  navLinksContainer.classList.toggle("active");
+});
 
-  // Opsi untuk Intersection Observer
-  const observerOptions = {
-    root: null,
-    rootMargin: "0px",
-    threshold: 0.6, // 60% section harus terlihat sebelum link aktif
-  };
-
-  // Buat Observer untuk memantau section mana yang sedang terlihat di layar
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        changeActiveLink(entry.target.id);
-      }
-    });
-  }, observerOptions);
-
-  // Minta Observer untuk memantau setiap section
-  sections.forEach((section) => {
-    observer.observe(section);
+// 2. Sembunyikan menu saat salah satu link di-klik (penting untuk mobile)
+allNavLinks.forEach((link) => {
+  link.addEventListener("click", () => {
+    if (window.innerWidth <= 768) {
+      navLinksContainer.classList.remove("active");
+    }
   });
+});
 
-  // Menambahkan efek bubble saat link di-klik juga
-  navLinks.forEach((link) => {
-    link.addEventListener("click", function () {
-      // Hapus 'active' dari semua link
-      navLinks.forEach((l) => l.classList.remove("active"));
-      // Tambahkan 'active' ke link yang baru saja di-klik
-      this.classList.add("active");
-    });
+const sections = document.querySelectorAll("main section[id]");
+const navLinks = document.querySelectorAll("nav ul li a");
+
+function changeNavOnScroll() {
+  let scrollY = window.pageYOffset;
+
+  sections.forEach((current) => {
+    const sectionHeight = current.offsetHeight;
+    // Ganti '150' jika Anda ingin 'highlight'-nya lebih cepat atau lambat
+    const sectionTop = current.offsetTop - 150;
+    let sectionId = current.getAttribute("id");
+
+    if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+      // Temukan link yang punya href="#sectionId"
+      const activeLink = document.querySelector(
+        `nav ul li a[href*="${sectionId}"]`
+      );
+
+      // Hapus .active dari semua link
+      navLinks.forEach((link) => {
+        link.classList.remove("active");
+      });
+
+      // Tambahkan .active ke link yang tepat
+      if (activeLink) {
+        activeLink.classList.add("active");
+      }
+    }
+  });
+}
+
+// Panggil fungsi saat scroll
+window.addEventListener("scroll", changeNavOnScroll);
+
+// Panggil sekali saat halaman di-load untuk meng-highlight link "Beranda"
+document.addEventListener("DOMContentLoaded", changeNavOnScroll);
+
+const accordions = document.querySelectorAll(".accordion-toggle");
+
+accordions.forEach((accordion) => {
+  accordion.addEventListener("click", function () {
+    // 1. Ubah ikon +/-
+    this.classList.toggle("active");
+    const icon = this.querySelector(".icon");
+    if (this.classList.contains("active")) {
+      icon.textContent = "−";
+    } else {
+      icon.textContent = "+";
+    }
+
+    // 2. Buka/tutup panelnya
+    const panel = this.nextElementSibling;
+    if (panel.style.maxHeight) {
+      // Jika sudah terbuka (ada maxHeight), tutup
+      panel.style.maxHeight = null;
+    } else {
+      // Jika tertutup, buka seukuran kontennya
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    }
   });
 });
